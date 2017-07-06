@@ -1,4 +1,4 @@
-module List.Comonad exposing (Comonad(..), extend, extract, laws)
+module List.Comonad exposing (Comonad(..), extend, extract, laws, lawful)
 
 import List exposing (map)
 
@@ -20,5 +20,8 @@ rightIdentity f co =
   (extract <| (extend f) <| co) == f co
 
 laws : Comonad a -> Bool
-laws co =
-  leftIdentity co && rightIdentity extract co
+laws = lawful extract
+
+lawful : (Comonad a -> a) -> Comonad a -> Bool
+lawful f co =
+  leftIdentity co && rightIdentity f co
